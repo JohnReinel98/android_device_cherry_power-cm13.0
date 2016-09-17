@@ -22,10 +22,14 @@ TARGET_BOOTLOADER_BOARD_NAME := mt6592
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 
-# Kernel
+# Kernel 
 BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
+BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/bootimg.mk
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --second_offset 0x00f00000 --tags_offset 0x00000100
+BOARD_CUSTOM_BOOTIMG := true
 
 # make_ext4fs requires numbers in dec format
 BOARD_BOOTIMAGE_PARTITION_SIZE := 10485760
@@ -64,6 +68,10 @@ COMMON_GLOBAL_CPPFLAGS += -DMTK_HARDWARE
 
 # Offline charging
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/BOOT/BOOT/boot/boot_mode
+BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_SHOW_PERCENTAGE := true
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.mtk
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/cherry/x300/ril/
@@ -117,3 +125,7 @@ BOARD_SEPOLICY_DIRS := \
 
 # Use old sepolicy version
 POLICYVERS := 26
+
+# Hack for build
+$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+
