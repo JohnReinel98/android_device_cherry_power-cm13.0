@@ -22,6 +22,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     lights.mt6592
 
+# GPS
+PRODUCT_PACKAGES += \
+    YGPS
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.primary.mt6592 \
