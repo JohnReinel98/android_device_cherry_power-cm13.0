@@ -22,9 +22,9 @@ cd ../..
 cd system/bt
 git apply -v ../../device/cherry/x300/patches/system_bt.patch
 cd ../..
-#cd system/core
-#git apply -v ../../device/cherry/x300/patches/system_core.patch
-#cd ../..
+cd system/core
+git apply -v ../../device/cherry/x300/patches/system_core.patch
+cd ../..
 cd system/netd
 git apply -v ../../device/cherry/x300/patches/system_netd.patch
 cd ../..
