@@ -1,3 +1,57 @@
+From 312d2da139f064b2e244b6329fa35c946e75c6ce Mon Sep 17 00:00:00 2001
+From: ferhung-mtk <ferhung27@gmail.com>
+Date: Sun, 17 Apr 2016 17:03:36 +0800
+Subject: [PATCH] MediaTek: setting selinux to permissive.
+
+---
+ init/init.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/init/init.cpp b/init/init.cpp
+index 58d7d34..fcd7187 100644
+--- a/init/init.cpp
++++ b/init/init.cpp
+@@ -929,6 +929,8 @@ static bool selinux_is_disabled(void)
+ 
+ static bool selinux_is_enforcing(void)
+ {
++    return false;  /*return false then set to permissive*/
++
+     if (ALLOW_DISABLE_SELINUX) {
+         return selinux_status_from_cmdline() == SELINUX_ENFORCING;
+     }
+
+
+From 586fa2e0f73ba4dcfcbaa83ac0c294abb694254d Mon Sep 17 00:00:00 2001
+From: ferhung-mtk <ferhung27@gmail.com>
+Date: Sun, 17 Apr 2016 17:06:12 +0800
+Subject: [PATCH] MediaTek: Add support for mt6582 & mt6592.
+
+---
+ init/Android.mk | 8 ++++++++
+ init/init.cpp   | 8 +++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/init/init.cpp b/init/init.cpp
+index fcd7187..f20c1d5 100644
+--- a/init/init.cpp
++++ b/init/init.cpp
+@@ -817,7 +817,13 @@ static void export_kernel_boot_props() {
+         { "ro.boot.mode",       "ro.bootmode",   "unknown", },
+         { "ro.boot.baseband",   "ro.baseband",   "unknown", },
+         { "ro.boot.bootloader", "ro.bootloader", "unknown", },
+-        { "ro.boot.hardware",   "ro.hardware",   "unknown", },
++#ifdef MTK_MT6582     
++        { "ro.boot.hardware",   "ro.hardware",   "mt6582", },
++#endif
++#ifdef MTK_MT6592     
++        { "ro.boot.hardware",   "ro.hardware",   "mt6592", },
++#endif  
++
+ #ifndef IGNORE_RO_BOOT_REVISION
+         { "ro.boot.revision",   "ro.revision",   "0", },
+ #endif
+
 From a81946ba921f8f149ac0ccd4b773e3e8563388e3 Mon Sep 17 00:00:00 2001
 From: ferhung-mtk <ferhung27@gmail.com>
 Date: Sun, 17 Apr 2016 17:08:19 +0800
@@ -52,7 +106,6 @@ index 0000000..c010831
 +}
 +
 
-
 From a15b30f3df8e72571be6d831daa853fedf59861c Mon Sep 17 00:00:00 2001
 From: ferhung-mtk <ferhung27@gmail.com>
 Date: Sun, 17 Apr 2016 17:09:53 +0800
@@ -75,8 +128,6 @@ index f20c1d5..3932cec 100644
  #endif
  }
  
-
-
 
 From 3b389be272b9c45e05b681967d0acf3195d8ee3a Mon Sep 17 00:00:00 2001
 From: ferhung-mtk <ferhung27@gmail.com>
@@ -394,7 +445,6 @@ index 3d2fda7..d844cfd 100644
      
      fclose(f);
 
-
 From 7c9e9af336885f1be0bc1b98455444bc129b9963 Mon Sep 17 00:00:00 2001
 From: ferhung-mtk <ferhung27@gmail.com>
 Date: Sun, 17 Apr 2016 23:33:38 +0800
@@ -422,6 +472,7 @@ index 67a8ad0..2ecb456 100644
      props.batteryTemperature = mBatteryFixedTemperature ?
          mBatteryFixedTemperature :
          getIntField(mHealthdConfig->batteryTemperaturePath);
+
 
 From c2fde1498f97be0ff5385cbcc346ccbcab78fced Mon Sep 17 00:00:00 2001
 From: ferhung-mtk <ferhung27@gmail.com>
@@ -492,7 +543,6 @@ index 3932cec..452d285 100644
  }
  
  static int queue_property_triggers_action(int nargs, char **args)
-
 
 
 
